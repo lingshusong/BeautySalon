@@ -51,7 +51,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        // TODO: format customer info
-        return String.format("Name: %s\nAddress: %s", name, address);
+        return String.format("编号:%04d\n姓名: %s\n住所: %s\n级别: %s", id, name, address, type);
     }
 }

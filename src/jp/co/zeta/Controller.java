@@ -12,28 +12,9 @@ public class Controller {
     public double calculate(Transaction transaction) {
         double result = 0.0;
 
-        double serviceRate = 0.0;
-        double productRate = 0.0;
-
         Customer customer = transaction.getCustomer();
-        switch (customer.getType()) {
-            case "gold":
-                serviceRate = DiscountRate.goldServiceRate;
-                productRate = DiscountRate.goldProductRate;
-                break;
-            case "silver":
-                serviceRate = DiscountRate.silverServiceRate;
-                productRate = DiscountRate.silverProductRate;
-                break;
-            case "normal":
-                serviceRate = DiscountRate.normalServiceRate;
-                productRate = DiscountRate.normalProductRate;
-                break;
-            default:
-                serviceRate = DiscountRate.noneServiceRate;
-                productRate = DiscountRate.noneProductRate;
-                break;
-        }
+        double serviceRate = DiscountRate.getServiceRate(customer.getType());
+        double productRate = DiscountRate.getProductRate(customer.getType());
 
         result = transaction.getServiceExpense() * (1 - serviceRate) + transaction.getProductExpense() * (1 - productRate);
 

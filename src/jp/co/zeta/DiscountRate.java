@@ -14,4 +14,46 @@ public class DiscountRate {
     public static double silverProductRate = 0.1;
     public static double normalProductRate = 0.1;
     public static double noneProductRate = 0.1;
+
+    public static double getServiceRate(String customerType) {
+        double serviceRate = 0.0;
+
+        switch (customerType) {
+            case "gold":
+                serviceRate = DiscountRate.goldServiceRate;
+                break;
+            case "silver":
+                serviceRate = DiscountRate.silverServiceRate;
+                break;
+            case "normal":
+                serviceRate = DiscountRate.normalServiceRate;
+                break;
+            default:
+                serviceRate = DiscountRate.noneServiceRate;
+                break;
+        }
+
+        return serviceRate;
+    }
+
+    public static double getProductRate(String customerType) {
+        double productRate = 0.0;
+
+        switch (customerType) {
+            case "gold":
+                productRate = DiscountRate.goldProductRate;
+                break;
+            case "silver":
+                productRate = DiscountRate.silverProductRate;
+                break;
+            case "normal":
+                productRate = DiscountRate.normalProductRate;
+                break;
+            default:
+                productRate = DiscountRate.noneProductRate;
+                break;
+        }
+
+        return productRate;
+    }
 }

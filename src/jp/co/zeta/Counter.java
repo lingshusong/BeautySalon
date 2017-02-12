@@ -14,8 +14,8 @@ public class Counter {
         boolean finished = false;
         Customer customer = null;
 
+        // customer
         while (!finished) {
-            // customer
             System.out.println("请选择输入顾客信息：\n1. 顾客ID\n2. 姓名/住址");
 
             String opt = scanner.next();
@@ -81,6 +81,7 @@ public class Counter {
                 serviceExpense = scanner.nextDouble();
             } else {
                 System.out.println("输入无效，请重试！");
+                scanner.next();
                 continue;
             }
             System.out.println("请输入顾客的产品消费金额：");
@@ -88,6 +89,7 @@ public class Counter {
                 productExpense = scanner.nextDouble();
             } else {
                 System.out.println("输入无效，请重试！");
+                scanner.next();
                 continue;
             }
             Transaction transaction = new Transaction(customer);

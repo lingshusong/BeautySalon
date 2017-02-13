@@ -1,5 +1,8 @@
 package jp.co.zeta;
 
+import jp.co.zeta.views.InputCustomerView;
+import jp.co.zeta.views.View;
+
 import java.util.Scanner;
 
 public class Counter {
@@ -10,6 +13,9 @@ public class Counter {
     }
 
     public void interact() {
+        //View inputCustomerView = new InputCustomerView(controller);
+        //inputCustomerView.show();
+
         Scanner scanner = new Scanner(System.in);
         boolean finished = false;
         Customer customer = null;
@@ -95,9 +101,12 @@ public class Counter {
             Transaction transaction = new Transaction(customer);
             transaction.setServiceExpense(serviceExpense);
             transaction.setProductExpense(productExpense);
+            controller.addTransaction(transaction);
             System.out.println(String.format("顾客本次消费：\n%s\n小计：¥%.2f（原价：%.2f）",
                     transaction, controller.calculate(transaction), transaction.getTotalExpense()));
             finished = true;
         }
+
+        controller.save();
     }
 }

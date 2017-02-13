@@ -11,13 +11,9 @@ public class Customer {
     private static int nextId = 0;
 
     public Customer(String name, String address) {
-        this(name, address, "");
-    }
-
-    public Customer(String name, String address, String type) {
         this.name = name;
         this.address = address;
-        this.type = type;
+        this.type = "";
         this.id = ++nextId;
     }
 
@@ -45,12 +41,20 @@ public class Customer {
         return type;
     }
 
-    public void setType() {
+    public void setType(String type) {
         this.type = type;
     }
 
     @Override
     public String toString() {
         return String.format("编号:%04d\n姓名: %s\n住所: %s\n级别: %s", id, name, address, type);
+    }
+
+    public void save() {
+
+    }
+
+    public void load() {
+
     }
 }

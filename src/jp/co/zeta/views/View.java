@@ -1,9 +1,17 @@
 package jp.co.zeta.views;
 
+import jp.co.zeta.Controller;
+
 /**
  * Created by kang on 12/02/2017.
  */
 public class View {
+    protected Controller controller;
+
+    public View(Controller controller) {
+        this.controller = controller;
+    }
+
     public void show() {
 
     }
@@ -15,12 +23,12 @@ public class View {
     }
 
     public boolean commit() {
-        boolean result = false;
+        boolean result = true;
 
         return result;
     }
 
-    public void jump(View view) {
-
+    public void jump(View target) {
+        target.show();
     }
 }

@@ -1,5 +1,6 @@
 package jp.co.zeta;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 /**
@@ -55,7 +56,7 @@ public class Transaction {
     @Override
     public String toString() {
         return String.format("顾客ID: %04d\n时间: %s\n服务消费: ¥%.2f\t服务折扣：%.2f\n产品消费: ¥%.2f\t产品折扣：%.2f",
-                customer.getId(), date, serviceExpense, DiscountRate.getServiceRate(customer.getType()),
+                customer.getId(), DateFormat.getInstance().format(date), serviceExpense, DiscountRate.getServiceRate(customer.getType()),
                 productExpense, DiscountRate.getProductRate(customer.getType()));
     }
 }

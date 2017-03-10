@@ -1,6 +1,7 @@
 package jp.co.zeta;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Scanner;
@@ -27,10 +28,23 @@ public class Controller {
                 String address = properties.length > 2 ? properties[2] : "";
                 String type = properties.length > 3 ? properties[3] : "";
                 Customer customer = new Customer(name, address);
-                customer.setType(type);
+                customer.setType(Customer.CustomerType.valueOf(type));
                 customers.add(customer);
             }
-            // TODO: load transactions
+            // load transactions
+            scanner = new Scanner(new File("Transactions.txt"));
+            while (scanner.hasNext()) {
+                String line = scanner.nextLine();
+                String[] properties = line.split("\t");
+                int id = properties.length > 0 ? Integer.parseInt(properties[0]) : 0;
+                String date = properties.length > 1 ? properties[1] : "";
+                double serviceExpense = properties.length > 2 ? Double.parseDouble(properties[2]) : 0;
+                double productExpense = properties.length > 3 ? Double.parseDouble(properties[3]) : 0;
+                Transaction transaction = new Transaction(getCustomer(id), DateFormat.getInstance().parse(date));
+                transaction.setServiceExpense(serviceExpense);
+                transaction.setProductExpense(productExpense);
+                transactions.add(transaction);
+            }
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -47,7 +61,7 @@ public class Controller {
             Formatter formatter = new Formatter(new File("Customers.txt"));
             for (Customer customer: customers) {
                 formatter.format("%d\t%s\t%s\t%s\n", customer.getId(), customer.getName(),
-                        customer.getAddress(), customer.getType());
+                        customer.getAddress(), customer.getType().name());
             }
             formatter.flush();
             formatter.close();
@@ -55,7 +69,19 @@ public class Controller {
             System.out.println(ex.getMessage());
         }
 
-        // TODO: save transaction
+        // save transactions
+        try {
+            Formatter formatter = new Formatter(new File("Transactions.txt"));
+            for (Transaction transaction: transactions) {
+                formatter.format("%d\t%s\t%f\t%f\n", transaction.getCustomer().getId(),
+                        DateFormat.getInstance().format(transaction.getDate()),
+                        transaction.getServiceExpense(), transaction.getProductExpense());
+            }
+            formatter.flush();
+            formatter.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
 
         return result;
     }
@@ -78,7 +104,7 @@ public class Controller {
 
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
-        String type = getCustomerType(transaction.getCustomer());
+        Customer.CustomerType type = getCustomerType(transaction.getCustomer());
         transaction.getCustomer().setType(type);
         System.out.println(String.format("Customer ID: %04d, Type: %s", transaction.getCustomer().getId(), type));
     }
@@ -109,16 +135,16 @@ public class Controller {
         return customer;
     }
 
-    private String getCustomerType(Customer customer) {
-        String type = "";
+    private Customer.CustomerType getCustomerType(Customer customer) {
+        Customer.CustomerType type = Customer.CustomerType.NONE;
 
         double expense = getTotalExpenseAmount(customer);
         if (expense >= 1e5) {
-            type = "gold";
+            type = Customer.CustomerType.GOLD;
         } else if (expense >= 5e4) {
-            type = "silver";
+            type = Customer.CustomerType.SILVER;
         } else if (expense >= 1e4) {
-            type = "normal";
+            type = Customer.CustomerType.NORMAL;
         }
 
         return type;

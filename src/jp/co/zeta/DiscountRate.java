@@ -15,17 +15,17 @@ public class DiscountRate {
     public static double normalProductRate = 0.1;
     public static double noneProductRate = 0.1;
 
-    public static double getServiceRate(String customerType) {
+    public static double getServiceRate(Customer.CustomerType customerType) {
         double serviceRate = 0.0;
 
         switch (customerType) {
-            case "gold":
+            case GOLD:
                 serviceRate = DiscountRate.goldServiceRate;
                 break;
-            case "silver":
+            case SILVER:
                 serviceRate = DiscountRate.silverServiceRate;
                 break;
-            case "normal":
+            case NORMAL:
                 serviceRate = DiscountRate.normalServiceRate;
                 break;
             default:
@@ -36,17 +36,17 @@ public class DiscountRate {
         return serviceRate;
     }
 
-    public static double getProductRate(String customerType) {
+    public static double getProductRate(Customer.CustomerType customerType) {
         double productRate = 0.0;
 
         switch (customerType) {
-            case "gold":
+            case GOLD:
                 productRate = DiscountRate.goldProductRate;
                 break;
-            case "silver":
+            case SILVER:
                 productRate = DiscountRate.silverProductRate;
                 break;
-            case "normal":
+            case NORMAL:
                 productRate = DiscountRate.normalProductRate;
                 break;
             default:

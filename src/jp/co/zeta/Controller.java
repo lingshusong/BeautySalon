@@ -1,5 +1,7 @@
 package jp.co.zeta;
 
+import jdk.internal.org.xml.sax.helpers.DefaultHandler;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -13,41 +15,18 @@ import java.util.StringTokenizer;
 public class Controller {
     ArrayList<Customer> customers = new ArrayList<>();
     ArrayList<Transaction> transactions = new ArrayList<>();
+    DataHandler dataHandler = new DataHandler();
 
     public boolean load() {
-        boolean result = false;
+        boolean result = true;
 
         try {
-            // load customers
-            Scanner scanner = new Scanner(new File("Customers.txt"));
-            while (scanner.hasNext()) {
-                String line = scanner.nextLine();
-                String[] properties = line.split("\t");
-                int id = properties.length > 0 ? Integer.parseInt(properties[0]) : 0;
-                String name = properties.length > 1 ? properties[1] : "";
-                String address = properties.length > 2 ? properties[2] : "";
-                String type = properties.length > 3 ? properties[3] : "";
-                Customer customer = new Customer(name, address);
-                customer.setType(Customer.CustomerType.valueOf(type));
-                customers.add(customer);
-            }
-            // load transactions
-            scanner = new Scanner(new File("Transactions.txt"));
-            while (scanner.hasNext()) {
-                String line = scanner.nextLine();
-                String[] properties = line.split("\t");
-                int id = properties.length > 0 ? Integer.parseInt(properties[0]) : 0;
-                String date = properties.length > 1 ? properties[1] : "";
-                double serviceExpense = properties.length > 2 ? Double.parseDouble(properties[2]) : 0;
-                double productExpense = properties.length > 3 ? Double.parseDouble(properties[3]) : 0;
-                Transaction transaction = new Transaction(getCustomer(id), DateFormat.getInstance().parse(date));
-                transaction.setServiceExpense(serviceExpense);
-                transaction.setProductExpense(productExpense);
-                transactions.add(transaction);
-            }
-
+            dataHandler.load();
+            customers = dataHandler.getCustomers();
+            transactions = dataHandler.getTransactions();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            result = false;
         }
 
         return result;
@@ -56,29 +35,8 @@ public class Controller {
     public boolean save() {
         boolean result = false;
 
-        // save customers
         try {
-            Formatter formatter = new Formatter(new File("Customers.txt"));
-            for (Customer customer: customers) {
-                formatter.format("%d\t%s\t%s\t%s\n", customer.getId(), customer.getName(),
-                        customer.getAddress(), customer.getType().name());
-            }
-            formatter.flush();
-            formatter.close();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        // save transactions
-        try {
-            Formatter formatter = new Formatter(new File("Transactions.txt"));
-            for (Transaction transaction: transactions) {
-                formatter.format("%d\t%s\t%f\t%f\n", transaction.getCustomer().getId(),
-                        DateFormat.getInstance().format(transaction.getDate()),
-                        transaction.getServiceExpense(), transaction.getProductExpense());
-            }
-            formatter.flush();
-            formatter.close();
+            dataHandler.save();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

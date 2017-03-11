@@ -12,6 +12,8 @@ public class Transaction {
     private double serviceExpense = 0.0;
     private double productExpense = 0.0;
 
+    public Transaction() {}
+
     public Transaction(Customer customer) {
         this(customer, new Date());
     }
@@ -23,6 +25,10 @@ public class Transaction {
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Date getDate() {

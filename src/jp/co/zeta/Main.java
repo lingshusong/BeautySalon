@@ -8,8 +8,11 @@ public class Main {
         Controller controller = new Controller();
         Counter counter = new Counter(controller);
         //generateData(controller);
-        controller.load();
-        counter.interact();
+        if (controller.load()) {
+            counter.interact();
+        } else {
+            System.out.println("数据加载失败！");
+        }
     }
 
     private static void generateData(Controller controller) {

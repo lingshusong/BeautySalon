@@ -32,16 +32,19 @@ public class Customer {
         }
     }
 
-    private String name;
-    private String address;
+    private String name = "";
+    private String address = "";
     private int id;
-    private CustomerType type;
+    private CustomerType type = CustomerType.NONE;
     private static int nextId = 0;
+
+    public Customer() {
+        this.id = ++nextId;
+    }
 
     public Customer(String name, String address) {
         this.name = name;
         this.address = address;
-        this.type = CustomerType.NONE;
         this.id = ++nextId;
     }
 
@@ -63,6 +66,10 @@ public class Customer {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public CustomerType getType() {
